@@ -54,7 +54,93 @@ CONTENT_TYPES = {
     "hu": ["📄 Üzleti ajánlatok (B2B)", "🔬 Tudományos/műszaki sajtóközlemények"]
 }
 
-# Структуры для разных типов контента
+# Расширенные аудиторные группы
+AUDIENCE_OPTIONS = {
+    "ru": {
+        "business": [
+            "👔 ЛПР (CEO, директор)",
+            "⚙️ Технари (инженеры, разработчики, R&D)",
+            "📢 Маркетологи и PR",
+            "💰 Инвесторы (фонды, бизнес-ангелы)",
+            "👥 Массовая аудитория (широкая публика)",
+            "🎯 Потенциальные сотрудники (найм)",
+            "🏢 Покупатели B2B (корпоративные клиенты)",
+            "🛍️ Покупатели B2C (конечные потребители)"
+        ],
+        "scientific": [
+            "🔬 Научные редакторы и журналисты",
+            "⚙️ R&D-директора и технические эксперты",
+            "💰 Инвесторы в deep tech",
+            "👥 Широкая публика (научпоп)",
+            "🎯 Потенциальные сотрудники (найм научных кадров)",
+            "🏢 Промышленные партнеры (B2B)",
+            "🛍️ Потребители технологий (B2C)"
+        ]
+    },
+    "en": {
+        "business": [
+            "👔 Executive (CEO, Director)",
+            "⚙️ Technical (Engineers, Developers, R&D)",
+            "📢 Marketing & PR",
+            "💰 Investor (VC, Angel)",
+            "👥 General Public",
+            "🎯 Potential Employees (Recruitment)",
+            "🏢 B2B Buyers (Corporate Clients)",
+            "🛍️ B2C Buyers (End Consumers)"
+        ],
+        "scientific": [
+            "🔬 Science Editors & Journalists",
+            "⚙️ R&D Directors & Technical Experts",
+            "💰 Deep Tech Investors",
+            "👥 General Public (Science Enthusiasts)",
+            "🎯 Potential Employees (Scientific Recruitment)",
+            "🏢 Industrial Partners (B2B)",
+            "🛍️ Technology Consumers (B2C)"
+        ]
+    }
+}
+
+# Стилистические инструкции для каждой аудитории
+AUDIENCE_STYLE_GUIDE = {
+    "ru": {
+        "👔 ЛПР (CEO, директор)": "Лаконично, стратегически. Фокус на ROI, эффективность, сроки окупаемости, конкурентные преимущества. Без технических деталей. Язык решений, а не процессов.",
+        "⚙️ Технари (инженеры, разработчики, R&D)": "Точно, детально, с цифрами и фактами. Используй профессиональную терминологию. Фокус на технические характеристики, архитектуру, reproducibility. Доверие через точность.",
+        "📢 Маркетологи и PR": "Ярко, образно, с акцентами на вовлечение и историю. Используй метафоры, контрасты, примеры. Фокус на уникальность, новизну, медийный потенциал.",
+        "💰 Инвесторы (фонды, бизнес-ангелы)": "Фокус на потенциал роста, масштабирование, TAM, unit-экономику, защиту интеллектуальной собственности, exit strategy. Рационально, без эйфории.",
+        "👥 Массовая аудитория (широкая публика)": "Просто, доступно, эмоционально. Избегай терминов. Фокус на выгоду для обычного человека, эмоции, понятные аналогии.",
+        "🎯 Потенциальные сотрудники (найм)": "Вдохновляюще, о миссии, культуре, развитии, команде. Фокус на возможности роста, интересные задачи, влияние на мир. Язык приглашения, не продажи.",
+        "🏢 Покупатели B2B (корпоративные клиенты)": "Рационально, о выгоде, надёжности, окупаемости, поддержке, интеграции. Фокус на снижение рисков и повышение эффективности бизнеса клиента.",
+        "🛍️ Покупатели B2C (конечные потребители)": "Эмоционально, о пользе, простоте, выгоде для себя. Фокус на решение личных проблем, удобство, статус, впечатления.",
+        # Scientific
+        "🔬 Научные редакторы и журналисты": "Аккуратно, фактологически точно. Фокус на новизну, воспроизводимость, значимость для научного сообщества. Язык научных публикаций, но без перегруза.",
+        "⚙️ R&D-директора и технические эксперты": "Глубоко, технически точно. Фокус на методологию, инновационность, применимость в R&D, защиту IP. Доверие через детали.",
+        "💰 Инвесторы в deep tech": "Фокус на технологическую уникальность, патенты, рынок, команду, барьеры входа. Язык технологических инвестиций.",
+        "👥 Широкая публика (научпоп)": "Увлекательно, доступно, образно. Фокус на удивление, практическое значение, понятные аналогии. Как статья в хорошем научпоп-медиа.",
+        "🎯 Потенциальные сотрудники (найм научных кадров)": "Вдохновляюще, о научных вызовах, оборудовании, коллаборациях, публикациях, возможностях роста.",
+        "🏢 Промышленные партнеры (B2B)": "О прикладной ценности, масштабируемости технологии, лицензировании, совместных разработках. Язык технологического трансфера.",
+        "🛍️ Потребители технологий (B2C)": "О том, как технология меняет жизнь: проще, быстрее, интереснее, безопаснее. Эмоционально, без терминов."
+    },
+    "en": {
+        "👔 Executive (CEO, Director)": "Concise, strategic. Focus on ROI, efficiency, payback period, competitive advantage. No technical details. Language of decisions, not processes.",
+        "⚙️ Technical (Engineers, Developers, R&D)": "Precise, detailed, with numbers and facts. Use professional terminology. Focus on technical specifications, architecture, reproducibility.",
+        "📢 Marketing & PR": "Vivid, figurative, focused on engagement and storytelling. Use metaphors, contrasts, examples. Focus on uniqueness, novelty, media potential.",
+        "💰 Investor (VC, Angel)": "Focus on growth potential, scalability, TAM, unit economics, IP protection, exit strategy. Rational, no hype.",
+        "👥 General Public": "Simple, accessible, emotional. Avoid jargon. Focus on benefits for ordinary people, emotions, relatable analogies.",
+        "🎯 Potential Employees (Recruitment)": "Inspiring, about mission, culture, growth, team. Focus on opportunities, interesting challenges, impact. Language of invitation.",
+        "🏢 B2B Buyers (Corporate Clients)": "Rational, about benefits, reliability, ROI, support, integration. Focus on reducing risks and improving client's business efficiency.",
+        "🛍️ B2C Buyers (End Consumers)": "Emotional, about benefits, simplicity, personal gain. Focus on solving personal problems, convenience, status, experience.",
+        # Scientific
+        "🔬 Science Editors & Journalists": "Precise, fact-based. Focus on novelty, reproducibility, significance for scientific community. Language of scientific publications.",
+        "⚙️ R&D Directors & Technical Experts": "Deep, technically precise. Focus on methodology, innovativeness, applicability in R&D, IP protection. Trust through detail.",
+        "💰 Deep Tech Investors": "Focus on technological uniqueness, patents, market, team, barriers to entry. Language of technology investments.",
+        "👥 General Public (Science Enthusiasts)": "Engaging, accessible, vivid. Focus on wonder, practical significance, relatable analogies. Like a good science article.",
+        "🎯 Potential Employees (Scientific Recruitment)": "Inspiring, about scientific challenges, equipment, collaborations, publications, growth opportunities.",
+        "🏢 Industrial Partners (B2B)": "About applied value, scalability, licensing, joint development. Language of technology transfer.",
+        "🛍️ Technology Consumers (B2C)": "About how technology changes life: easier, faster, more interesting, safer. Emotional, no jargon."
+    }
+}
+
+# Структуры для разных типов контента (оставлены как в предыдущей версии)
 STRUCTURES = {
     "business": {
         "ru": """
@@ -74,47 +160,11 @@ Ideal business proposal structure:
 4. Proof (case, numbers)
 5. Price and terms
 6. Call to action (unambiguous)
-""",
-        "de": """
-Ideale Struktur für Geschäftsangebote:
-1. Schmerz (klares Kundenproblem)
-2. Lösung (ein Satz, Alleinstellungsmerkmal)
-3. Wie es funktioniert (Mechanismus)
-4. Beweise (Fallbeispiel, Zahlen)
-5. Preis und Konditionen
-6. Handlungsaufforderung (eindeutig)
-""",
-        "fr": """
-Structure idéale d'une proposition commerciale:
-1. Problème (problème clair du client)
-2. Solution (une phrase, USP)
-3. Comment ça fonctionne (mécanisme)
-4. Preuves (cas, chiffres)
-5. Prix et conditions
-6. Appel à l'action (sans ambiguïté)
-""",
-        "es": """
-Estructura ideal de propuesta comercial:
-1. Dolor (problema claro del cliente)
-2. Solución (una frase, USP)
-3. Cómo funciona (mecanismo)
-4. Pruebas (caso, números)
-5. Precio y condiciones
-6. Llamada a la acción (inequívoca)
-""",
-        "zh": """
-理想商业提案结构：
-1. 痛点（明确的客户问题）
-2. 解决方案（一句话，独特卖点）
-3. 工作原理（机制）
-4. 证据（案例、数据）
-5. 价格与条款
-6. 行动号召（明确）
 """
     },
     "scientific": {
         "ru": """
-Структура идеального научного/технического пресс-релиза:
+Структура идеального научного/технического пресс-лиза:
 1. Заголовок-сенсация (главное открытие одним предложением)
 2. Лид (кто, что, где, когда, почему это важно)
 3. Контекст и актуальность проблемы
@@ -134,83 +184,36 @@ Ideal scientific/technical press release structure:
 6. Significance for science/industry/society
 7. Quotes from researchers or experts
 8. Contact information and publication links
-""",
-        "de": """
-Ideale Struktur für wissenschaftliche/technische Pressemitteilungen:
-1. Schlagzeile (die wichtigste Entdeckung in einem Satz)
-2. Einleitung (wer, was, wo, wann, warum es wichtig ist)
-3. Kontext und Relevanz des Problems
-4. Methodik und Ansatz (wie es gemacht wurde)
-5. Wichtige Ergebnisse und Beweise (Daten, Zahlen)
-6. Bedeutung für Wissenschaft/Industrie/Gesellschaft
-7. Zitate von Forschern oder Experten
-8. Kontaktinformationen und Publikationslinks
-""",
-        "fr": """
-Structure idéale d'un communiqué de presse scientifique/technique:
-1. Titre accrocheur (la découverte principale en une phrase)
-2. Introduction (qui, quoi, où, quand, pourquoi c'est important)
-3. Contexte et pertinence du problème
-4. Méthodologie et approche (comment cela a été fait)
-5. Résultats clés et preuves (données, chiffres)
-6. Importance pour la science/l'industrie/la société
-7. Citations des chercheurs ou experts
-8. Coordonnées et liens vers les publications
-""",
-        "es": """
-Estructura ideal de comunicado de prensa científico/técnico:
-1. Titular (el descubrimiento principal en una frase)
-2. Entrada (quién, qué, dónde, cuándo, por qué es importante)
-3. Contexto y relevancia del problema
-4. Metodología y enfoque (cómo se hizo)
-5. Resultados clave y evidencia (datos, números)
-6. Importancia para la ciencia/industria/sociedad
-7. Citas de investigadores o expertos
-8. Información de contacto y enlaces a publicaciones
-""",
-        "zh": """
-理想科学/技术新闻稿结构：
-1. 标题（一句话概括主要发现）
-2. 导语（谁、什么、在哪里、何时、为什么重要）
-3. 问题背景和相关性
-4. 方法论和途径（如何完成）
-5. 关键结果和证据（数据、数字）
-6. 对科学/工业/社会的意义
-7. 研究人员或专家引用
-8. 联系信息和出版物链接
 """
     }
 }
 
-# База текстов интерфейса (сокращенно, полные версии из предыдущего кода)
-# Здесь я приведу сокращенную версию для компактности.
-# В реальном коде должны быть полные TEXTS для всех языков.
-# Для простоты сейчас оставлю основные языки, остальные будут на английском.
-
+# Тексты интерфейса (базовые)
 TEXTS = {
     "ru": {
         "title": "✂️ ReText – Контент-хирург",
-        "subtitle": "Переделываем тексты в продающие, вовлекающие, понятные.",
+        "subtitle": "Переделываем тексты под любую аудиторию: продажи, найм, наука, PR.",
         "settings": "Настройки",
         "language": "Язык интерфейса",
         "content_type": "Тип контента",
         "tone_params": "Параметры тональности",
         "audience": "Аудитория",
-        "audience_options_business": ["ЛПР", "Технари", "Маркетологи", "Инвесторы", "Массовая"],
-        "audience_options_scientific": ["Научные редакторы", "Журналисты", "R&D-директора", "Инвесторы", "Широкая публика"],
         "emotionality": "Эмоциональность",
         "emotionality_options": ["низкая", "средняя", "высокая"],
         "complexity": "Сложность",
         "complexity_options": ["простая", "средняя", "высокая"],
         "speed": "Скорость/ритм",
         "speed_options": ["ритмичная", "размеренная", "прерывистая"],
+        "literary_editing": "Литературное редактирование",
+        "literary_editing_help": "Убирает повторы, тавтологию, улучшает стиль",
         "text_input_label": "Вставьте текст:",
         "run_button": "🚀 Запустить ReText",
-        "spinner1": "1/5 Смысловая диагностика...",
-        "spinner2": "2/5 Реструктуризация...",
-        "spinner3": "3/5 Настройка тональности...",
-        "spinner4": "4/5 Добавление вовлекающих элементов...",
-        "spinner5": "5/5 Формирование отчёта...",
+        "spinner1": "1/6 Смысловая диагностика...",
+        "spinner2": "2/6 Реструктуризация...",
+        "spinner3": "3/6 Настройка тональности и стиля под аудиторию...",
+        "spinner4": "4/6 Добавление вовлекающих элементов...",
+        "spinner5": "5/6 Литературное редактирование...",
+        "spinner6": "6/6 Формирование отчёта...",
         "diagnosis_title": "🔍 Смысловая диагностика",
         "main_thesis": "**Главная мысль:**",
         "diagnosis": "**Диагноз:**",
@@ -227,27 +230,28 @@ TEXTS = {
     },
     "en": {
         "title": "✂️ ReText – Content Surgeon",
-        "subtitle": "Turn boring texts into selling, engaging, clear documents.",
+        "subtitle": "Rewrite texts for any audience: sales, recruitment, science, PR.",
         "settings": "Settings",
         "language": "Interface language",
         "content_type": "Content type",
         "tone_params": "Tone parameters",
         "audience": "Audience",
-        "audience_options_business": ["Executive", "Technical", "Marketing", "Investor", "General"],
-        "audience_options_scientific": ["Science editors", "Journalists", "R&D directors", "Investors", "General public"],
         "emotionality": "Emotionality",
         "emotionality_options": ["low", "medium", "high"],
         "complexity": "Complexity",
         "complexity_options": ["simple", "medium", "complex"],
         "speed": "Pacing",
         "speed_options": ["rhythmic", "measured", "jerky"],
+        "literary_editing": "Literary editing",
+        "literary_editing_help": "Removes repetitions, tautology, improves style",
         "text_input_label": "Paste your text:",
         "run_button": "🚀 Run ReText",
-        "spinner1": "1/5 Sense diagnosis...",
-        "spinner2": "2/5 Restructuring...",
-        "spinner3": "3/5 Tone adjustment...",
-        "spinner4": "4/5 Adding engagement elements...",
-        "spinner5": "5/5 Generating report...",
+        "spinner1": "1/6 Sense diagnosis...",
+        "spinner2": "2/6 Restructuring...",
+        "spinner3": "3/6 Tone & style adjustment for audience...",
+        "spinner4": "4/6 Adding engagement elements...",
+        "spinner5": "5/6 Literary editing...",
+        "spinner6": "6/6 Generating report...",
         "diagnosis_title": "🔍 Sense diagnosis",
         "main_thesis": "**Main thesis:**",
         "diagnosis": "**Diagnosis:**",
@@ -264,36 +268,31 @@ TEXTS = {
     }
 }
 
-# Для остальных языков используем английский как fallback
 def get_text(key, lang_code):
     if lang_code in TEXTS and key in TEXTS[lang_code]:
         return TEXTS[lang_code][key]
     return TEXTS["en"].get(key, key)
 
 def get_audience_options(content_type, lang_code):
-    if content_type == "business":
-        if lang_code in TEXTS and "audience_options_business" in TEXTS[lang_code]:
-            return TEXTS[lang_code]["audience_options_business"]
-        return TEXTS["en"]["audience_options_business"]
-    else:
-        if lang_code in TEXTS and "audience_options_scientific" in TEXTS[lang_code]:
-            return TEXTS[lang_code]["audience_options_scientific"]
-        return TEXTS["en"]["audience_options_scientific"]
+    if lang_code in AUDIENCE_OPTIONS:
+        if content_type in AUDIENCE_OPTIONS[lang_code]:
+            return AUDIENCE_OPTIONS[lang_code][content_type]
+    return AUDIENCE_OPTIONS["en"][content_type]
+
+def get_audience_style_guide(audience, lang_code):
+    if lang_code in AUDIENCE_STYLE_GUIDE:
+        if audience in AUDIENCE_STYLE_GUIDE[lang_code]:
+            return AUDIENCE_STYLE_GUIDE[lang_code][audience]
+    return AUDIENCE_STYLE_GUIDE["en"].get(audience, "")
 
 def get_emotionality_options(lang_code):
-    if lang_code in TEXTS:
-        return TEXTS[lang_code]["emotionality_options"]
-    return TEXTS["en"]["emotionality_options"]
+    return TEXTS.get(lang_code, TEXTS["en"])["emotionality_options"]
 
 def get_complexity_options(lang_code):
-    if lang_code in TEXTS:
-        return TEXTS[lang_code]["complexity_options"]
-    return TEXTS["en"]["complexity_options"]
+    return TEXTS.get(lang_code, TEXTS["en"])["complexity_options"]
 
 def get_speed_options(lang_code):
-    if lang_code in TEXTS:
-        return TEXTS[lang_code]["speed_options"]
-    return TEXTS["en"]["speed_options"]
+    return TEXTS.get(lang_code, TEXTS["en"])["speed_options"]
 
 def get_prompt_language(lang_code):
     prompt_langs = {
@@ -304,12 +303,10 @@ def get_prompt_language(lang_code):
     return prompt_langs.get(lang_code, "English")
 
 def get_structure(content_type, lang_code):
-    """Возвращает структуру для выбранного типа контента на нужном языке"""
     if content_type == "business":
         structure_dict = STRUCTURES["business"]
     else:
         structure_dict = STRUCTURES["scientific"]
-    
     if lang_code in structure_dict:
         return structure_dict[lang_code]
     return structure_dict.get("en", "")
@@ -380,23 +377,28 @@ Text:
 
 def adjust_tone(text, audience, emotionality, complexity, speed, content_type, lang):
     prompt_lang = get_prompt_language(lang)
-    tone_guidance = ""
-    if content_type == "scientific":
-        tone_guidance = "Use a professional, authoritative, but accessible tone. Avoid hype. Focus on accuracy and significance."
-    else:
-        tone_guidance = "Use a persuasive, benefit-driven tone. Focus on value and results."
+    style_guide = get_audience_style_guide(audience, lang)
     
-    prompt = f"""{tone_guidance}
+    if content_type == "scientific":
+        base_guidance = "This is a scientific/technical text. Maintain accuracy and authority."
+    else:
+        base_guidance = "This is a business text. Maintain persuasiveness and clarity."
+    
+    prompt = f"""{base_guidance}
 
-Adjust the tone according to:
-- Audience: {audience}
+AUDIENCE: {audience}
+STYLE GUIDE FOR THIS AUDIENCE: {style_guide}
+
+Adjust the text according to:
+- Tone: match the audience's expectations
 - Emotionality: {emotionality}
 - Complexity: {complexity}
 - Pacing: {speed}
 
 IMPORTANT: Respond in {prompt_lang} language.
 
-Keep the meaning, change the style. Return only text.
+Keep the core meaning. Adapt style, vocabulary, arguments, and examples to resonate with the specified audience.
+Return only the rewritten text.
 
 Text:
 """
@@ -438,6 +440,28 @@ Text:
 """
     messages = [{"role": "user", "content": prompt + text}]
     return call_gpt(messages)
+
+def literary_editing(text, lang):
+    prompt_lang = get_prompt_language(lang)
+    prompt = f"""You are a professional literary editor and stylist.
+
+Perform literary editing on the text:
+1. Remove repetitions and tautology
+2. Replace repeated words with synonyms
+3. Improve sentence structure and flow
+4. Fix clumsy or awkward phrasing
+5. Ensure grammatical correctness
+6. Maintain the original meaning and tone
+7. Make the text more elegant and readable
+
+IMPORTANT: Respond in {prompt_lang} language.
+
+Return ONLY the edited text, no explanations.
+
+Text to edit:
+"""
+    messages = [{"role": "user", "content": prompt + text}]
+    return call_gpt(messages, temperature=0.8)
 
 def final_check(original, rewritten, lang):
     prompt_lang = get_prompt_language(lang)
@@ -484,7 +508,6 @@ def visual_diff(original, rewritten):
 
 # ==================== ОСНОВНОЙ ИНТЕРФЕЙС ====================
 
-# Выбор языка
 lang_options = list(LANGUAGES.keys())
 selected_lang_name = st.sidebar.selectbox("🌐 Language / Язык", lang_options, index=0)
 ui_lang_code = LANGUAGES[selected_lang_name]
@@ -496,26 +519,29 @@ with st.sidebar:
     st.header(get_text("settings", ui_lang_code))
     st.markdown("---")
     
-    # Выбор типа контента
     content_type_options = CONTENT_TYPES.get(ui_lang_code, CONTENT_TYPES["en"])
     selected_content_type_name = st.selectbox(
         get_text("content_type", ui_lang_code),
         content_type_options,
         index=0
     )
-    # Определяем, какой тип выбран
     if "Коммерческие" in selected_content_type_name or "Business" in selected_content_type_name or "Geschäfts" in selected_content_type_name:
         content_type = "business"
     else:
         content_type = "scientific"
     
     st.markdown("---")
-    st.subheader(get_text("tone_params", ui_lang_code))
     
+    # Выбор аудитории с расширенными вариантами
+    audience_options = get_audience_options(content_type, ui_lang_code)
     audience = st.selectbox(
         get_text("audience", ui_lang_code),
-        get_audience_options(content_type, ui_lang_code)
+        audience_options,
+        index=0
     )
+    
+    st.markdown("---")
+    st.subheader(get_text("tone_params", ui_lang_code))
     
     emotionality_options = get_emotionality_options(ui_lang_code)
     emotionality = st.select_slider(
@@ -539,7 +565,14 @@ with st.sidebar:
     )
     
     st.markdown("---")
-    st.caption("ReText v0.5 - Business & Scientific modes")
+    enable_editing = st.checkbox(
+        get_text("literary_editing", ui_lang_code),
+        value=True,
+        help=get_text("literary_editing_help", ui_lang_code)
+    )
+    
+    st.markdown("---")
+    st.caption("ReText v0.7 - Extended audiences with style guides")
 
 input_text = st.text_area(
     get_text("text_input_label", ui_lang_code),
@@ -574,11 +607,20 @@ if st.button(get_text("run_button", ui_lang_code)):
         
         with st.spinner(get_text("spinner2", ui_lang_code)):
             restructured = restructure(input_text, content_type, target_lang)
+        
         with st.spinner(get_text("spinner3", ui_lang_code)):
             toned = adjust_tone(restructured, audience, emotionality, complexity, speed, content_type, target_lang)
+        
         with st.spinner(get_text("spinner4", ui_lang_code)):
-            final_text = add_engagement(toned, content_type, target_lang)
-        with st.spinner(get_text("spinner5", ui_lang_code)):
+            engaged = add_engagement(toned, content_type, target_lang)
+        
+        if enable_editing:
+            with st.spinner(get_text("spinner5", ui_lang_code)):
+                final_text = literary_editing(engaged, target_lang)
+        else:
+            final_text = engaged
+        
+        with st.spinner(get_text("spinner6", ui_lang_code)):
             report = final_check(input_text, final_text, target_lang)
         
         st.success(get_text("success", ui_lang_code))
