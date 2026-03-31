@@ -3,7 +3,6 @@ import openai
 import json
 import difflib
 from datetime import datetime
-import hashlib
 import os
 
 st.set_page_config(page_title="ReText – Контент-хирург для КП", page_icon="✂️")
@@ -24,11 +23,13 @@ def check_password():
 
 check_password()
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Инициализация клиента OpenAI (новый синтаксис)
+client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def call_gpt(messages, model="gpt-4o-mini", temperature=0.7):
+    """Универсальный вызов GPT с обработкой ошибок (новый синтаксис)"""
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=temperature
