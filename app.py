@@ -49,30 +49,32 @@ def detect_language(text):
 
 def sense_diagnosis(text, lang):
     prompt_ru = """
-Ты — эксперт по коммерческим предложениям (КП). Проанализируй КП и верни JSON:
+Ты — эксперт по коммерческим предложениям (КП). Проанализируй КП и верни ТОЛЬКО JSON, без пояснений и без маркеров разметки.
 
+Формат ответа (пример):
 {
   "main_thesis": "Главная мысль КП (одно предложение). Если её нет — сформулируй на основе текста.",
   "secondary_theses": ["второстепенный тезис 1", "тезис 2"],
   "missing_thesis": "Если главной мысли нет — что должно быть главной мыслью?",
-  "unproven_claims": ["утверждение без доказательства", ...],
-  "hidden_meanings": ["скрытый подтекст", ...],
-  "redundant_parts": ["части, которые не работают на продажу", ...],
+  "unproven_claims": ["утверждение без доказательства"],
+  "hidden_meanings": ["скрытый подтекст"],
+  "redundant_parts": ["части, которые не работают на продажу"],
   "diagnosis": "Краткий вывод (1-2 предложения)"
 }
 
 Текст КП:
 """
     prompt_en = """
-You are a B2B proposal expert. Analyze the proposal and return JSON:
+You are a B2B proposal expert. Analyze the proposal and return ONLY JSON, without explanations and without markdown markers.
 
+Format example:
 {
   "main_thesis": "The main selling idea (one sentence). If missing, formulate it.",
   "secondary_theses": ["secondary thesis 1", "thesis 2"],
   "missing_thesis": "If no main thesis, what should it be?",
-  "unproven_claims": ["claim without proof", ...],
-  "hidden_meanings": ["hidden subtext", ...],
-  "redundant_parts": ["parts that don't help sell", ...],
+  "unproven_claims": ["claim without proof"],
+  "hidden_meanings": ["hidden subtext"],
+  "redundant_parts": ["parts that don't help sell"],
   "diagnosis": "Brief conclusion (1-2 sentences)"
 }
 
@@ -80,11 +82,24 @@ Proposal text:
 """
     messages = [{"role": "user", "content": (prompt_ru if lang == "ru" else prompt_en) + text}]
     result = call_gpt(messages)
+    
+    # Очистка ответа от маркеров markdown и лишних символов
+    if result:
+        result = result.strip()
+        if result.startswith("```json"):
+            result = result[7:]
+        if result.startswith("```"):
+            result = result[3:]
+        if result.endswith("```"):
+            result = result[:-3]
+        result = result.strip()
+    
     try:
         return json.loads(result)
-    except:
-        return {"error": "Не удалось распарсить JSON", "raw": result}
-
+    except json.JSONDecodeError as e:
+        return {"error": f"Не удалось распарсить JSON: {e}", "raw": result}
+    except Exception as e:
+        return {"error": f"Ошибка: {e}", "raw": result}
 def restructure(text, text_type, lang):
     structure_ru = """
 Структура идеального КП:
