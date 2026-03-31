@@ -71,12 +71,7 @@ TEXTS = {
         "session_count": "Сессий за время работы:",
         "warning_empty": "Пожалуйста, введите текст.",
         "lang_detected": "Определён язык:",
-        "lang_russian": "Русский",
-        "lang_english": "English",
-        "lang_german": "Deutsch",
-        "lang_french": "Français",
-        "lang_spanish": "Español",
-        "lang_chinese": "中文"
+        "lang_russian": "Русский"
     },
     "en": {
         "title": "✂️ ReText – Content Surgeon for Business Proposals",
@@ -113,12 +108,7 @@ TEXTS = {
         "session_count": "Sessions during runtime:",
         "warning_empty": "Please enter text.",
         "lang_detected": "Language detected:",
-        "lang_russian": "Russian",
-        "lang_english": "English",
-        "lang_german": "German",
-        "lang_french": "French",
-        "lang_spanish": "Spanish",
-        "lang_chinese": "Chinese"
+        "lang_russian": "Russian"
     },
     "de": {
         "title": "✂️ ReText – Content-Chirurg für Geschäftsangebote",
@@ -155,12 +145,7 @@ TEXTS = {
         "session_count": "Sitzungen während der Laufzeit:",
         "warning_empty": "Bitte geben Sie Text ein.",
         "lang_detected": "Erkannte Sprache:",
-        "lang_russian": "Russisch",
-        "lang_english": "Englisch",
-        "lang_german": "Deutsch",
-        "lang_french": "Französisch",
-        "lang_spanish": "Spanisch",
-        "lang_chinese": "Chinesisch"
+        "lang_russian": "Russisch"
     },
     "fr": {
         "title": "✂️ ReText – Chirurgien de contenu pour propositions commerciales",
@@ -197,12 +182,7 @@ TEXTS = {
         "session_count": "Sessions depuis le lancement :",
         "warning_empty": "Veuillez saisir du texte.",
         "lang_detected": "Langue détectée :",
-        "lang_russian": "Russe",
-        "lang_english": "Anglais",
-        "lang_german": "Allemand",
-        "lang_french": "Français",
-        "lang_spanish": "Espagnol",
-        "lang_chinese": "Chinois"
+        "lang_russian": "Russe"
     },
     "es": {
         "title": "✂️ ReText – Cirujano de contenido para propuestas comerciales",
@@ -239,12 +219,7 @@ TEXTS = {
         "session_count": "Sesiones durante la ejecución:",
         "warning_empty": "Por favor, ingrese texto.",
         "lang_detected": "Idioma detectado:",
-        "lang_russian": "Ruso",
-        "lang_english": "Inglés",
-        "lang_german": "Alemán",
-        "lang_french": "Francés",
-        "lang_spanish": "Español",
-        "lang_chinese": "Chino"
+        "lang_russian": "Ruso"
     },
     "zh": {
         "title": "✂️ ReText – 商业提案内容外科医生",
@@ -281,12 +256,7 @@ TEXTS = {
         "session_count": "运行期间会话数：",
         "warning_empty": "请输入文本。",
         "lang_detected": "检测到的语言：",
-        "lang_russian": "俄语",
-        "lang_english": "英语",
-        "lang_german": "德语",
-        "lang_french": "法语",
-        "lang_spanish": "西班牙语",
-        "lang_chinese": "中文"
+        "lang_russian": "俄语"
     }
 }
 
@@ -311,23 +281,17 @@ def call_gpt(messages, model="gpt-4o-mini", temperature=0.7):
 
 def detect_language(text):
     import re
-    # Простая эвристика для определения языка
     cyrillic = len(re.findall(r'[а-яА-ЯёЁ]', text))
     if cyrillic > len(text) * 0.3:
         return "ru"
-    
-    # Проверка на китайский
     chinese = len(re.findall(r'[\u4e00-\u9fff]', text))
     if chinese > len(text) * 0.3:
         return "zh"
-    
-    # По умолчанию английский (или другой западный язык)
     return "en"
 
 def sense_diagnosis(text, lang):
     prompts = {
-        "ru": f"""
-Ты — эксперт по коммерческим предложениям (КП). Проанализируй КП и верни ТОЛЬКО JSON, без пояснений и без маркеров разметки.
+        "ru": f"""Ты — эксперт по коммерческим предложениям (КП). Проанализируй КП и верни ТОЛЬКО JSON, без пояснений и без маркеров разметки.
 
 Формат ответа:
 {{
@@ -342,8 +306,7 @@ def sense_diagnosis(text, lang):
 
 Текст КП:
 """,
-        "en": f"""
-You are a B2B proposal expert. Analyze the proposal and return ONLY JSON, without explanations and without markdown markers.
+        "en": f"""You are a B2B proposal expert. Analyze the proposal and return ONLY JSON, without explanations and without markdown markers.
 
 Format:
 {{
@@ -358,8 +321,7 @@ Format:
 
 Proposal text:
 """,
-        "de": f"""
-Du bist ein Experte für Geschäftsangebote. Analysiere das Angebot und gib NUR JSON zurück, ohne Erklärungen und ohne Markdown-Markierungen.
+        "de": f"""Du bist ein Experte für Geschäftsangebote. Analysiere das Angebot und gib NUR JSON zurück, ohne Erklärungen und ohne Markdown-Markierungen.
 
 Format:
 {{
@@ -374,8 +336,7 @@ Format:
 
 Angebotstext:
 """,
-        "fr": f"""
-Vous êtes un expert en propositions commerciales. Analysez la proposition et renvoyez UNIQUEMENT du JSON, sans explications ni marqueurs Markdown.
+        "fr": f"""Vous êtes un expert en propositions commerciales. Analysez la proposition et renvoyez UNIQUEMENT du JSON, sans explications ni marqueurs Markdown.
 
 Format:
 {{
@@ -390,8 +351,7 @@ Format:
 
 Texte de la proposition:
 """,
-        "es": f"""
-Eres un experto en propuestas comerciales. Analiza la propuesta y devuelve SOLO JSON, sin explicaciones ni marcadores Markdown.
+        "es": f"""Eres un experto en propuestas comerciales. Analiza la propuesta y devuelve SOLO JSON, sin explicaciones ni marcadores Markdown.
 
 Formato:
 {{
@@ -406,8 +366,7 @@ Formato:
 
 Texto de la propuesta:
 """,
-        "zh": f"""
-您是商业提案专家。分析提案并仅返回 JSON，不要解释和 Markdown 标记。
+        "zh": f"""您是商业提案专家。分析提案并仅返回 JSON，不要解释和 Markdown 标记。
 
 格式：
 {{
@@ -444,8 +403,7 @@ Texto de la propuesta:
 
 def restructure(text, text_type, lang):
     prompts = {
-        "ru": f"""
-Структура идеального КП:
+        "ru": f"""Структура идеального КП:
 1. Боль (понятная клиенту проблема)
 2. Решение (одним предложением, УТП)
 3. Как это работает (механизм)
@@ -458,8 +416,7 @@ def restructure(text, text_type, lang):
 
 Текст:
 """,
-        "en": f"""
-Ideal proposal structure:
+        "en": f"""Ideal proposal structure:
 1. Pain (clear client problem)
 2. Solution (one sentence, USP)
 3. How it works (mechanism)
@@ -472,8 +429,7 @@ Return only the rewritten text.
 
 Text:
 """,
-        "de": f"""
-Ideale Angebotsstruktur:
+        "de": f"""Ideale Angebotsstruktur:
 1. Schmerz (klares Kundenproblem)
 2. Lösung (ein Satz, Alleinstellungsmerkmal)
 3. Wie es funktioniert (Mechanismus)
@@ -486,8 +442,7 @@ Gib nur den überarbeiteten Text zurück.
 
 Text:
 """,
-        "fr": f"""
-Structure idéale d'une proposition :
+        "fr": f"""Structure idéale d'une proposition :
 1. Problème (problème clair du client)
 2. Solution (une phrase, USP)
 3. Comment ça fonctionne (mécanisme)
@@ -500,8 +455,7 @@ Retournez uniquement le texte réécrit.
 
 Texte :
 """,
-        "es": f"""
-Estructura ideal de propuesta:
+        "es": f"""Estructura ideal de propuesta:
 1. Dolor (problema claro del cliente)
 2. Solución (una frase, USP)
 3. Cómo funciona (mecanismo)
@@ -514,8 +468,7 @@ Devuelve solo el texto reescrito.
 
 Texto:
 """,
-        "zh": f"""
-理想提案结构：
+        "zh": f"""理想提案结构：
 1. 痛点（明确的客户问题）
 2. 解决方案（一句话，独特卖点）
 3. 工作原理（机制）
@@ -533,84 +486,74 @@ Texto:
     return call_gpt(messages)
 
 def adjust_tone(text, audience, emotionality, complexity, speed, lang):
-    # Преобразование опций для английского языка (если нужно)
-    audience_map = {
-        "ЛПР": "Executive", "Технари": "Technical", "Маркетологи": "Marketing",
-        "Инвесторы": "Investor", "Массовая": "General",
-        "Führungskraft": "Executive", "Techniker": "Technical", "Marketing": "Marketing",
-        "Investor": "Investor", "Allgemein": "General",
-        "Dirigeant": "Executive", "Technique": "Technical", "Marketing": "Marketing",
-        "Investisseur": "Investor", "Grand public": "General",
-        "Directivo": "Executive", "Técnico": "Technical", "Marketing": "Marketing",
-        "Inversor": "Investor", "Público general": "General",
-        "高管": "Executive", "技术人员": "Technical", "市场营销": "Marketing",
-        "投资者": "Investor", "大众": "General"
-    }
-    aud_en = audience_map.get(audience, audience)
-    
     prompts = {
-        "ru": f"""
-Измени тональность текста согласно параметрам:
+        "ru": f"""Измени тональность текста согласно параметрам:
 - Аудитория: {audience}
 - Эмоциональность: {emotionality}
 - Сложность: {complexity}
 - Скорость/ритм: {speed}
 
 Сохрани смысл, но измени стиль. Верни только текст.
+
+Текст:
 """,
-        "en": f"""
-Adjust the tone according to:
-- Audience: {aud_en}
+        "en": f"""Adjust the tone according to:
+- Audience: {audience}
 - Emotionality: {emotionality}
 - Complexity: {complexity}
 - Pacing: {speed}
 
 Keep the meaning, change the style. Return only text.
+
+Text:
 """,
-        "de": f"""
-Passe den Tonfall gemäß den Parametern an:
+        "de": f"""Passe den Tonfall gemäß den Parametern an:
 - Zielgruppe: {audience}
 - Emotionalität: {emotionality}
 - Komplexität: {complexity}
 - Rhythmus: {speed}
 
 Behalte den Sinn bei, ändere den Stil. Gib nur den Text zurück.
+
+Text:
 """,
-        "fr": f"""
-Ajustez le ton selon les paramètres :
+        "fr": f"""Ajustez le ton selon les paramètres :
 - Public : {audience}
 - Émotionnalité : {emotionality}
 - Complexité : {complexity}
 - Rythme : {speed}
 
 Gardez le sens, changez le style. Retournez uniquement le texte.
+
+Texte :
 """,
-        "es": f"""
-Ajusta el tono según los parámetros:
+        "es": f"""Ajusta el tono según los parámetros:
 - Audiencia: {audience}
 - Emocionalidad: {emotionality}
 - Complejidad: {complexity}
 - Ritmo: {speed}
 
 Mantén el significado, cambia el estilo. Devuelve solo el texto.
+
+Texto:
 """,
-        "zh": f"""
-根据以下参数调整语气：
+        "zh": f"""根据以下参数调整语气：
 - 受众：{audience}
 - 情感度：{emotionality}
 - 复杂度：{complexity}
 - 节奏：{speed}
 
 保持含义，改变风格。仅返回文本。
+
+文本：
 """
     }
-    messages = [{"role": "user", "content": prompts.get(lang, prompts["en"]) + "\n\nТекст:\n" + text}]
+    messages = [{"role": "user", "content": prompts.get(lang, prompts["en"]) + text}]
     return call_gpt(messages)
 
 def add_engagement(text, lang):
     prompts = {
-        "ru": """
-Добавь в текст вовлекающие элементы:
+        "ru": """Добавь в текст вовлекающие элементы:
 - Заголовок-крючок (если нет)
 - Вопрос в первом абзаце
 - Разбей на абзацы по 1-3 предложения
@@ -620,9 +563,10 @@ def add_engagement(text, lang):
 - Выдели **жирным** ключевые фразы (10-15% текста)
 
 Верни итоговый текст.
+
+Текст:
 """,
-        "en": """
-Add engagement elements:
+        "en": """Add engagement elements:
 - Hook title (if missing)
 - Question in first paragraph
 - Break into paragraphs of 1-3 sentences
@@ -632,9 +576,10 @@ Add engagement elements:
 - **Bold** key phrases (10-15% of text)
 
 Return final text.
+
+Text:
 """,
-        "de": """
-Füge Engagement-Elemente hinzu:
+        "de": """Füge Engagement-Elemente hinzu:
 - Aufmerksamkeitsstarker Titel (falls fehlend)
 - Frage im ersten Absatz
 - Unterteile in Absätze mit 1-3 Sätzen
@@ -644,9 +589,10 @@ Füge Engagement-Elemente hinzu:
 - **Fett** hervorgehobene Schlüsselphrasen (10-15% des Textes)
 
 Gib den endgültigen Text zurück.
+
+Text:
 """,
-        "fr": """
-Ajoutez des éléments engageants :
+        "fr": """Ajoutez des éléments engageants :
 - Titre accrocheur (si absent)
 - Question dans le premier paragraphe
 - Divisez en paragraphes de 1 à 3 phrases
@@ -656,9 +602,10 @@ Ajoutez des éléments engageants :
 - Mettez **en gras** les phrases clés (10-15% du texte)
 
 Retournez le texte final.
+
+Texte :
 """,
-        "es": """
-Agrega elementos atractivos:
+        "es": """Agrega elementos atractivos:
 - Título gancho (si falta)
 - Pregunta en el primer párrafo
 - Divide en párrafos de 1-3 oraciones
@@ -668,9 +615,10 @@ Agrega elementos atractivos:
 - **Negrita** para frases clave (10-15% del texto)
 
 Devuelve el texto final.
+
+Texto:
 """,
-        "zh": """
-添加吸引元素：
+        "zh": """添加吸引元素：
 - 钩子标题（如果没有）
 - 第一段加入问题
 - 分成 1-3 句的段落
@@ -680,15 +628,16 @@ Devuelve el texto final.
 - **加粗**关键短语（占文本 10-15%）
 
 返回最终文本。
+
+文本：
 """
     }
-    messages = [{"role": "user", "content": prompts.get(lang, prompts["en"]) + "\n\nТекст:\n" + text}]
+    messages = [{"role": "user", "content": prompts.get(lang, prompts["en"]) + text}]
     return call_gpt(messages)
 
 def final_check(original, rewritten, lang):
     prompts = {
-        "ru": f"""
-Сравни исходный и переработанный текст. Верни ТОЛЬКО JSON, без пояснений и без маркеров разметки.
+        "ru": f"""Сравни исходный и переработанный текст. Верни ТОЛЬКО JSON, без пояснений и без маркеров разметки.
 
 Формат:
 {{
@@ -704,8 +653,7 @@ def final_check(original, rewritten, lang):
 Переработанный:
 {rewritten}
 """,
-        "en": f"""
-Compare original and rewritten text. Return ONLY JSON, without explanations and without markdown markers.
+        "en": f"""Compare original and rewritten text. Return ONLY JSON, without explanations and without markdown markers.
 
 Format:
 {{
@@ -721,8 +669,7 @@ Original:
 Rewritten:
 {rewritten}
 """,
-        "de": f"""
-Vergleiche den ursprünglichen und den überarbeiteten Text. Gib NUR JSON zurück, ohne Erklärungen und ohne Markdown-Markierungen.
+        "de": f"""Vergleiche den ursprünglichen und den überarbeiteten Text. Gib NUR JSON zurück, ohne Erklärungen und ohne Markdown-Markierungen.
 
 Format:
 {{
@@ -738,8 +685,7 @@ Original:
 Überarbeitet:
 {rewritten}
 """,
-        "fr": f"""
-Compare le texte original et le texte réécrit. Renvoie UNIQUEMENT du JSON, sans explications ni marqueurs Markdown.
+        "fr": f"""Compare le texte original et le texte réécrit. Renvoie UNIQUEMENT du JSON, sans explications ni marqueurs Markdown.
 
 Format:
 {{
@@ -755,5 +701,86 @@ Original :
 Réécrit :
 {rewritten}
 """,
-        "es": f"""
-Compara el
+        "es": f"""Compara el texto original y el texto reescrito. Devuelve SOLO JSON, sin explicaciones ni marcadores Markdown.
+
+Formato:
+{{
+  "is_better": true,
+  "changes_summary": "lo que cambió y por qué (1-2 párrafos)",
+  "improvements": ["mejora 1", "mejora 2"],
+  "score_out_of_10": 8
+}}
+
+Original:
+{original}
+
+Reescrito:
+{rewritten}
+""",
+        "zh": f"""比较原文和重写后的文本。仅返回 JSON，不要解释和 Markdown 标记。
+
+格式：
+{{
+  "is_better": true,
+  "changes_summary": "更改了什么以及为什么（1-2 段）",
+  "improvements": ["改进 1", "改进 2"],
+  "score_out_of_10": 8
+}}
+
+原文：
+{original}
+
+重写后：
+{rewritten}
+"""
+    }
+    messages = [{"role": "user", "content": prompts.get(lang, prompts["en"])}]
+    result = call_gpt(messages)
+    
+    if result:
+        result = result.strip()
+        if result.startswith("```json"):
+            result = result[7:]
+        if result.startswith("```"):
+            result = result[3:]
+        if result.endswith("```"):
+            result = result[:-3]
+        result = result.strip()
+    
+    try:
+        return json.loads(result)
+    except:
+        return result
+
+def visual_diff(original, rewritten):
+    diff = difflib.HtmlDiff(wrapcolumn=80).make_file(
+        original.splitlines(), rewritten.splitlines(),
+        fromdesc="Было", todesc="Стало", context=True, numlines=2
+    )
+    return diff
+
+# ==================== ОСНОВНОЙ ИНТЕРФЕЙС ====================
+
+# Выбор языка
+lang_options = list(LANGUAGES.keys())
+selected_lang_name = st.sidebar.selectbox("🌐 Language / Язык", lang_options, index=0)
+ui_lang = LANGUAGES[selected_lang_name]
+
+st.title(t("title", ui_lang))
+st.markdown(t("subtitle", ui_lang))
+
+with st.sidebar:
+    st.header(t("settings", ui_lang))
+    st.markdown("---")
+    st.subheader(t("tone_params", ui_lang))
+    audience = st.selectbox(t("audience", ui_lang), TEXTS[ui_lang]["audience_options"])
+    emotionality = st.select_slider(t("emotionality", ui_lang), options=TEXTS[ui_lang]["emotionality_options"], value=TEXTS[ui_lang]["emotionality_options"][1])
+    complexity = st.select_slider(t("complexity", ui_lang), options=TEXTS[ui_lang]["complexity_options"], value=TEXTS[ui_lang]["complexity_options"][1])
+    speed = st.select_slider(t("speed", ui_lang), options=TEXTS[ui_lang]["speed_options"], value=TEXTS[ui_lang]["speed_options"][0])
+    
+    st.markdown("---")
+    st.caption("ReText v0.2 для TEXTUM")
+
+input_text = st.text_area(t("text_input_label", ui_lang), height=300, max_chars=8000)
+
+if st.button(t("
