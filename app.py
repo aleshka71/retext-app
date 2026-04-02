@@ -12,13 +12,12 @@ import time
 st.set_page_config(page_title="ReText – Editorial AI Assistant", page_icon="✂️", layout="wide")
 
 # ==================== НАСТРОЙКИ БЕЛОЙ МАРКИРОВКИ ====================
-# Эти параметры можно менять под свой бренд
 BRAND_CONFIG = {
     "logo_emoji": "✂️",
     "app_name": "ReText",
     "company_name": "TEXTUM",
-    "primary_color": "#FF4B4B",  # красный
-    "secondary_color": "#1E88E5", # синий
+    "primary_color": "#FF4B4B",
+    "secondary_color": "#1E88E5",
     "custom_css": """
         .stApp { background-color: #fafafa; }
         .stButton button { background-color: #FF4B4B; color: white; border-radius: 8px; }
@@ -26,7 +25,6 @@ BRAND_CONFIG = {
     """
 }
 
-# Применяем CSS
 st.markdown(f"<style>{BRAND_CONFIG['custom_css']}</style>", unsafe_allow_html=True)
 
 # ==================== АВТОРИЗАЦИЯ ====================
@@ -50,16 +48,13 @@ check_password()
 if "usage_count" not in st.session_state:
     st.session_state.usage_count = 0
 if "subscription_tier" not in st.session_state:
-    st.session_state.subscription_tier = "free"  # free, pro, business
-if "feedback_history" not in st.session_state:
-    st.session_state.feedback_history = []  # для обучения на правках
+    st.session_state.subscription_tier = "free"
 
 def check_usage_limit():
-    """Проверяет, не превышен ли лимит обработок для текущего тарифа"""
     limits = {"free": 5, "pro": 100, "business": 1000}
     limit = limits.get(st.session_state.subscription_tier, 5)
     if st.session_state.usage_count >= limit and st.session_state.subscription_tier == "free":
-        st.warning("⚠️ Бесплатный лимит (5 обработок) исчерпан. Обновите тариф в настройках.")
+        st.warning("⚠️ Free limit (5 uses) reached. Upgrade in settings.")
         return False
     return True
 
@@ -68,7 +63,7 @@ def increment_usage():
 
 # ==================== ИСТОРИЯ ОБРАБОТКИ ====================
 if "history" not in st.session_state:
-    st.session_state.history = []  # список из 10 последних (оригинал, результат)
+    st.session_state.history = []
 
 def add_to_history(original, result):
     st.session_state.history.insert(0, {"original": original[:500], "result": result[:500], "timestamp": datetime.now().isoformat()})
@@ -76,10 +71,9 @@ def add_to_history(original, result):
 
 # ==================== ГЛОССАРИЙ ТЕРМИНОВ ====================
 if "glossary" not in st.session_state:
-    st.session_state.glossary = {}  # {"термин": "предпочтительный перевод/стиль"}
+    st.session_state.glossary = {}
 
 def apply_glossary(text):
-    """Заменяет термины согласно глоссарию (простая реализация)"""
     for term, replacement in st.session_state.glossary.items():
         text = re.sub(rf'\b{re.escape(term)}\b', replacement, text, flags=re.IGNORECASE)
     return text
@@ -98,131 +92,127 @@ LANGUAGES = {
     "🇨🇿 Čeština": "cs"
 }
 
+# Опции для слайдеров (для каждого языка)
+OPTIONS = {
+    "ru": {
+        "emotionality": ["низкая", "средняя", "высокая"],
+        "complexity": ["простая", "средняя", "высокая"],
+        "speed": ["ритмичная", "размеренная", "прерывистая"]
+    },
+    "en": {
+        "emotionality": ["low", "medium", "high"],
+        "complexity": ["simple", "medium", "complex"],
+        "speed": ["rhythmic", "measured", "jerky"]
+    },
+    "de": {
+        "emotionality": ["niedrig", "mittel", "hoch"],
+        "complexity": ["einfach", "mittel", "komplex"],
+        "speed": ["rhythmisch", "gemäßigt", "ruckartig"]
+    },
+    "fr": {
+        "emotionality": ["faible", "moyenne", "élevée"],
+        "complexity": ["simple", "moyenne", "complexe"],
+        "speed": ["rythmé", "mesuré", "saccadé"]
+    },
+    "es": {
+        "emotionality": ["baja", "media", "alta"],
+        "complexity": ["simple", "media", "compleja"],
+        "speed": ["rítmico", "pausado", "entrecortado"]
+    },
+    "sr": {
+        "emotionality": ["niska", "srednja", "visoka"],
+        "complexity": ["jednostavna", "srednja", "složena"],
+        "speed": ["ritmičan", "odmeren", "isprekidan"]
+    },
+    "sq": {
+        "emotionality": ["i ulët", "i mesëm", "i lartë"],
+        "complexity": ["i thjeshtë", "i mesëm", "kompleks"],
+        "speed": ["ritmik", "i matur", "i ndërprerë"]
+    },
+    "pl": {
+        "emotionality": ["niska", "średnia", "wysoka"],
+        "complexity": ["prosta", "średnia", "złożona"],
+        "speed": ["rytmiczny", "wyważony", "urywany"]
+    },
+    "hu": {
+        "emotionality": ["alacsony", "közepes", "magas"],
+        "complexity": ["egyszerű", "közepes", "összetett"],
+        "speed": ["ritmikus", "mértéktartó", "szaggatott"]
+    },
+    "cs": {
+        "emotionality": ["nízká", "střední", "vysoká"],
+        "complexity": ["jednoduchá", "střední", "složitá"],
+        "speed": ["rytmický", "odměřený", "trhavý"]
+    }
+}
+
+# Тексты интерфейса
 TEXTS = {
     "ru": {
         "title": f"{BRAND_CONFIG['logo_emoji']} {BRAND_CONFIG['app_name']} – Редакционный ИИ-ассистент",
         "subtitle": "Расшифровка интервью, анализ документов, SEO, HR, выступления, фактчекинг, юр. проверка.",
-        "settings": "Настройки",
-        "language": "Язык интерфейса",
-        "assistant": "Ассистент",
-        "styleguide": "📚 Стайлгайд издания",
-        "examples": "📁 Примеры и референсы",
-        "glossary": "📖 Глоссарий терминов (термин → замена)",
-        "google_docs": "🔗 Google Docs",
-        "google_docs_url": "Ссылка на Google Doc (для импорта)",
-        "google_docs_import": "📥 Импортировать",
-        "google_docs_export": "📤 Экспорт (скопировать)",
-        "audience": "Аудитория и задача",
-        "emotionality": "Эмоциональность",
-        "emotionality_options": ["низкая", "средняя", "высокая"],
-        "complexity": "Сложность",
-        "complexity_options": ["простая", "средняя", "высокая"],
-        "speed": "Скорость/ритм",
-        "speed_options": ["ритмичная", "размеренная", "прерывистая"],
-        "text_input_label": "Вставьте текст (транскрипт, документ, статью, вакансию):",
-        "run_button": "🚀 Запустить",
-        "spinner1": "1/9 Смысловая диагностика...",
-        "spinner2": "2/9 Структурирование...",
-        "spinner3": "3/9 Адаптация под аудиторию...",
-        "spinner4": "4/9 Вовлекающие элементы...",
-        "spinner5": "5/9 Лит. редактирование...",
-        "spinner6": "6/9 Финальная проверка...",
-        "spinner7": "7/9 Фактчекинг и юр. проверка...",
-        "spinner8": "8/9 Применение глоссария...",
-        "spinner9": "9/9 Формирование отчёта...",
-        "diagnosis_title": "🔍 Смысловая диагностика",
-        "main_thesis": "**Главная мысль:**",
-        "diagnosis": "**Диагноз:**",
-        "redundant_parts": "**Лишние части:**",
-        "correct_thesis": "Если главная мысль неверна, исправьте:",
-        "using_thesis": "Будем использовать:",
-        "success": "Готово!",
-        "tab_result": "📄 Результат",
-        "tab_report": "📊 Отчёт",
-        "tab_diff": "🔍 Сравнение",
-        "tab_original": "📜 Исходный текст",
-        "tab_verification": "🔍 Протокол верификации",
-        "tab_history": "📜 История",
-        "session_count": "Сессий:",
-        "warning_empty": "Пожалуйста, введите текст.",
-        "verification_header": "Протокол верификации",
-        "verification_checklist": "**Что обязательно проверить:**",
-        "verification_assumptions": "**⚠️ Предположения модели:**",
-        "verification_ready": "**✅ Может использоваться как есть:**",
-        "factcheck_found": "**🔍 Факты, требующие проверки:**",
-        "legal_risks": "**⚖️ Юридические риски (формулировки):**",
-        "export_to_docs": "📋 Скопировать для вставки в Google Docs/Notion",
-        "subscription": "Тариф",
-        "subscription_free": "Бесплатный (5 обработок)",
-        "subscription_pro": "Pro (100 обработок)",
-        "subscription_business": "Business (1000 обработок)",
-        "usage_left": f"Осталось обработок: {5 - st.session_state.usage_count if st.session_state.subscription_tier == 'free' else 'много'}",
-        "upgrade_button": "💳 Обновить тариф (демо)"
+        "settings": "Настройки", "language": "Язык интерфейса", "assistant": "Ассистент",
+        "styleguide": "📚 Стайлгайд издания", "examples": "📁 Примеры и референсы",
+        "glossary": "📖 Глоссарий терминов", "google_docs": "🔗 Google Docs",
+        "google_docs_url": "Ссылка на Google Doc", "google_docs_import": "📥 Импортировать",
+        "google_docs_export": "📤 Экспорт", "audience": "Аудитория и задача",
+        "emotionality": "Эмоциональность", "complexity": "Сложность", "speed": "Скорость/ритм",
+        "text_input_label": "Вставьте текст:", "run_button": "🚀 Запустить",
+        "spinner1": "1/9 Диагностика...", "spinner2": "2/9 Структура...", "spinner3": "3/9 Тон...",
+        "spinner4": "4/9 Вовлечение...", "spinner5": "5/9 Редактура...", "spinner6": "6/9 Проверка...",
+        "spinner7": "7/9 Фактчекинг...", "spinner8": "8/9 Глоссарий...", "spinner9": "9/9 Отчёт...",
+        "diagnosis_title": "🔍 Диагностика", "main_thesis": "**Главная мысль:**", "diagnosis": "**Диагноз:**",
+        "redundant_parts": "**Лишние части:**", "correct_thesis": "Исправьте:", "using_thesis": "Используем:",
+        "success": "Готово!", "tab_result": "📄 Результат", "tab_report": "📊 Отчёт",
+        "tab_diff": "🔍 Сравнение", "tab_original": "📜 Исходный", "tab_verification": "🔍 Верификация",
+        "tab_history": "📜 История", "session_count": "Сессий:", "warning_empty": "Введите текст",
+        "verification_header": "Протокол", "verification_checklist": "**Проверить:**",
+        "verification_assumptions": "**⚠️ Предположения:**", "verification_ready": "**✅ Готово:**",
+        "factcheck_found": "**🔍 Факты для проверки:**", "legal_risks": "**⚖️ Юр. риски:**",
+        "export_to_docs": "📋 Скопировать", "subscription": "Тариф",
+        "subscription_free": "Бесплатный (5)", "subscription_pro": "Pro (100)", "subscription_business": "Business (1000)",
+        "usage_left": "Осталось:", "upgrade_button": "💳 Обновить",
+        "google_docs_import_success": "Импортировано", "google_docs_error": "Ошибка импорта"
     },
     "en": {
         "title": f"{BRAND_CONFIG['logo_emoji']} {BRAND_CONFIG['app_name']} – Editorial AI Assistant",
         "subtitle": "Interview transcription, document analysis, SEO, HR, speeches, fact-checking, legal review.",
-        "settings": "Settings",
-        "language": "Interface language",
-        "assistant": "Assistant",
-        "styleguide": "📚 Style guide",
-        "examples": "📁 Examples & references",
-        "glossary": "📖 Glossary (term → replacement)",
-        "google_docs": "🔗 Google Docs",
-        "google_docs_url": "Google Doc URL (import)",
-        "google_docs_import": "📥 Import",
-        "google_docs_export": "📤 Export (copy)",
-        "audience": "Audience & task",
-        "emotionality": "Emotionality",
-        "emotionality_options": ["low", "medium", "high"],
-        "complexity": "Complexity",
-        "complexity_options": ["simple", "medium", "complex"],
-        "speed": "Pacing",
-        "speed_options": ["rhythmic", "measured", "jerky"],
-        "text_input_label": "Paste your text (transcript, document, vacancy):",
-        "run_button": "🚀 Run",
-        "spinner1": "1/9 Sense diagnosis...",
-        "spinner2": "2/9 Structuring...",
-        "spinner3": "3/9 Audience adaptation...",
-        "spinner4": "4/9 Engagement elements...",
-        "spinner5": "5/9 Literary editing...",
-        "spinner6": "6/9 Final checklist...",
-        "spinner7": "7/9 Fact-check & legal review...",
-        "spinner8": "8/9 Glossary application...",
-        "spinner9": "9/9 Generating report...",
-        "diagnosis_title": "🔍 Sense diagnosis",
-        "main_thesis": "**Main thesis:**",
-        "diagnosis": "**Diagnosis:**",
-        "redundant_parts": "**Redundant parts:**",
-        "correct_thesis": "If incorrect, correct:",
-        "using_thesis": "Will use:",
-        "success": "Done!",
-        "tab_result": "📄 Result",
-        "tab_report": "📊 Report",
-        "tab_diff": "🔍 Comparison",
-        "tab_original": "📜 Original",
-        "tab_verification": "🔍 Verification",
-        "tab_history": "📜 History",
-        "session_count": "Sessions:",
-        "warning_empty": "Please enter text.",
-        "verification_header": "Verification protocol",
-        "verification_checklist": "**Must verify:**",
-        "verification_assumptions": "**⚠️ AI assumptions:**",
-        "verification_ready": "**✅ Can be used as is:**",
-        "factcheck_found": "**🔍 Facts to verify:**",
-        "legal_risks": "**⚖️ Legal risks (phrasing):**",
-        "export_to_docs": "📋 Copy to paste into Google Docs/Notion",
-        "subscription": "Plan",
-        "subscription_free": "Free (5 uses)",
-        "subscription_pro": "Pro (100 uses)",
-        "subscription_business": "Business (1000 uses)",
-        "usage_left": f"Remaining: {5 - st.session_state.usage_count if st.session_state.subscription_tier == 'free' else 'many'}",
-        "upgrade_button": "💳 Upgrade plan (demo)"
+        "settings": "Settings", "language": "Interface language", "assistant": "Assistant",
+        "styleguide": "📚 Style guide", "examples": "📁 Examples & references",
+        "glossary": "📖 Glossary", "google_docs": "🔗 Google Docs",
+        "google_docs_url": "Google Doc URL", "google_docs_import": "📥 Import",
+        "google_docs_export": "📤 Export", "audience": "Audience & task",
+        "emotionality": "Emotionality", "complexity": "Complexity", "speed": "Pacing",
+        "text_input_label": "Paste text:", "run_button": "🚀 Run",
+        "spinner1": "1/9 Diagnosis...", "spinner2": "2/9 Structure...", "spinner3": "3/9 Tone...",
+        "spinner4": "4/9 Engagement...", "spinner5": "5/9 Editing...", "spinner6": "6/9 Check...",
+        "spinner7": "7/9 Fact-check...", "spinner8": "8/9 Glossary...", "spinner9": "9/9 Report...",
+        "diagnosis_title": "🔍 Diagnosis", "main_thesis": "**Main thesis:**", "diagnosis": "**Diagnosis:**",
+        "redundant_parts": "**Redundant:**", "correct_thesis": "Correct:", "using_thesis": "Using:",
+        "success": "Done!", "tab_result": "📄 Result", "tab_report": "📊 Report",
+        "tab_diff": "🔍 Compare", "tab_original": "📜 Original", "tab_verification": "🔍 Verify",
+        "tab_history": "📜 History", "session_count": "Sessions:", "warning_empty": "Enter text",
+        "verification_header": "Protocol", "verification_checklist": "**Verify:**",
+        "verification_assumptions": "**⚠️ Assumptions:**", "verification_ready": "**✅ Ready:**",
+        "factcheck_found": "**🔍 Facts to verify:**", "legal_risks": "**⚖️ Legal risks:**",
+        "export_to_docs": "📋 Copy", "subscription": "Plan",
+        "subscription_free": "Free (5)", "subscription_pro": "Pro (100)", "subscription_business": "Business (1000)",
+        "usage_left": "Left:", "upgrade_button": "💳 Upgrade",
+        "google_docs_import_success": "Imported", "google_docs_error": "Import failed"
     }
 }
 
+# Функции для получения текста и опций
 def get_text(key, lang):
-    return TEXTS.get(lang, TEXTS["en"]).get(key, TEXTS["en"].get(key, key))
+    if lang in TEXTS:
+        return TEXTS[lang].get(key, TEXTS["en"].get(key, key))
+    return TEXTS["en"].get(key, key)
+
+def get_options(lang, option_type):
+    """Возвращает опции для слайдера на нужном языке"""
+    if lang in OPTIONS and option_type in OPTIONS[lang]:
+        return OPTIONS[lang][option_type]
+    return OPTIONS["en"][option_type]
 
 def get_prompt_language(lang):
     prompt_langs = {
@@ -244,14 +234,14 @@ def extract_text_from_uploaded(file):
             pdf = PyPDF2.PdfReader(io.BytesIO(content))
             return "\n".join([page.extract_text() for page in pdf.pages])
         except:
-            return "[Ошибка чтения PDF]"
+            return "[PDF read error]"
     elif "word" in file.type or "document" in file.type:
         try:
             import docx
             doc = docx.Document(io.BytesIO(content))
             return "\n".join([p.text for p in doc.paragraphs])
         except:
-            return "[Ошибка чтения DOCX]"
+            return "[DOCX read error]"
     return ""
 
 def import_from_google_docs(url):
@@ -295,47 +285,37 @@ def get_assistants(lang):
 
 # ==================== АУДИТОРНЫЕ ГРУППЫ ====================
 AUDIENCE_OPTIONS = {
-    "ru": [
-        "👔 ЛПР (CEO, директор) — стратегия, результаты",
-        "⚙️ Технари — точность, факты",
-        "📢 Маркетологи и PR — значимость, новизна",
-        "💰 Инвесторы — эффективность, масштабирование",
-        "👥 Массовая аудитория — простота, примеры",
-        "🎯 Потенциальные сотрудники — вовлеченность, ценности",
-        "🏢 Покупатели B2B — выгода, надежность",
-        "🛍️ Покупатели B2C — польза, впечатления"
-    ],
-    "en": [
-        "👔 Executive — strategy, results",
-        "⚙️ Technical — precision, facts",
-        "📢 Marketing & PR — significance, novelty",
-        "💰 Investor — efficiency, scalability",
-        "👥 General public — simplicity, examples",
-        "🎯 Potential employees — engagement, values",
-        "🏢 B2B buyers — benefits, reliability",
-        "🛍️ B2C buyers — personal benefit"
-    ]
+    "ru": ["👔 ЛПР", "⚙️ Технари", "📢 Маркетологи", "💰 Инвесторы", "👥 Массовая", "🎯 Сотрудники", "🏢 B2B", "🛍️ B2C"],
+    "en": ["👔 Executive", "⚙️ Technical", "📢 Marketing", "💰 Investor", "👥 General", "🎯 Employees", "🏢 B2B", "🛍️ B2C"],
+    "de": ["👔 Führung", "⚙️ Technik", "📢 Marketing", "💰 Investor", "👥 Öffentlichkeit", "🎯 Mitarbeiter", "🏢 B2B", "🛍️ B2C"],
+    "fr": ["👔 Dirigeant", "⚙️ Technique", "📢 Marketing", "💰 Investisseur", "👥 Public", "🎯 Employés", "🏢 B2B", "🛍️ B2C"],
+    "es": ["👔 Ejecutivo", "⚙️ Técnico", "📢 Marketing", "💰 Inversor", "👥 Público", "🎯 Empleados", "🏢 B2B", "🛍️ B2C"],
+    "sr": ["👔 Rukovodilac", "⚙️ Tehničari", "📢 Marketing", "💰 Investitori", "👥 Publika", "🎯 Zaposleni", "🏢 B2B", "🛍️ B2C"],
+    "sq": ["👔 Ekzekutiv", "⚙️ Teknik", "📢 Marketing", "💰 Investitor", "👥 Publiku", "🎯 Punonjës", "🏢 B2B", "🛍️ B2C"],
+    "pl": ["👔 Kierownictwo", "⚙️ Technicy", "📢 Marketing", "💰 Inwestorzy", "👥 Publiczność", "🎯 Pracownicy", "🏢 B2B", "🛍️ B2C"],
+    "hu": ["👔 Vezető", "⚙️ Műszaki", "📢 Marketing", "💰 Befektető", "👥 Közönség", "🎯 Alkalmazottak", "🏢 B2B", "🛍️ B2C"],
+    "cs": ["👔 Vedení", "⚙️ Technici", "📢 Marketing", "💰 Investoři", "👥 Veřejnost", "🎯 Zaměstnanci", "🏢 B2B", "🛍️ B2C"]
 }
+
 def get_audience_options(lang):
     return AUDIENCE_OPTIONS.get(lang, AUDIENCE_OPTIONS["en"])
 
-# ==================== ФУНКЦИИ ДЛЯ ФАКТЧЕКИНГА И ЮР. ПРОВЕРКИ ====================
+# ==================== ФУНКЦИИ ДЛЯ ФАКТЧЕКИНГА ====================
 def factcheck_and_legal(text, lang):
     prompt_lang = get_prompt_language(lang)
     prompt = f"""Analyze the text for:
-1. FACT-CHECKING: Identify factual claims that need verification (statistics, dates, names, quotes, prices). Return as list.
-2. LEGAL RISKS: Identify phrases that may pose legal risks (guarantees, promises of results, unconditional refunds, misleading claims). Return as list.
+1. FACT-CHECKING: Identify factual claims that need verification. Return as list.
+2. LEGAL RISKS: Identify phrases that may pose legal risks. Return as list.
 
 Return ONLY JSON:
 {{
-  "facts_to_verify": ["claim 1", "claim 2"],
-  "legal_risks": ["risky phrase 1", "risky phrase 2"]
+  "facts_to_verify": [],
+  "legal_risks": []
 }}
 
 IMPORTANT: Respond in {prompt_lang} language.
 
-Text:
-{text[:3000]}
+Text: {text[:3000]}
 """
     messages = [{"role": "user", "content": prompt}]
     result = call_gpt(messages, temperature=0.5)
@@ -352,19 +332,7 @@ Text:
     except:
         return {"facts_to_verify": [], "legal_risks": []}
 
-# ==================== ОБУЧЕНИЕ НА ПРАВКАХ (сохранение обратной связи) ====================
-def save_feedback(original, ai_version, user_edited_version):
-    """Сохраняет правки пользователя для будущего обучения"""
-    st.session_state.feedback_history.append({
-        "original": original[:500],
-        "ai": ai_version[:500],
-        "user": user_edited_version[:500],
-        "timestamp": datetime.now().isoformat()
-    })
-    # Ограничим историю правок 50 записями
-    st.session_state.feedback_history = st.session_state.feedback_history[-50:]
-
-# ==================== ОСНОВНЫЕ АГЕНТЫ (сокращённо, но полностью рабочие) ====================
+# ==================== ОСНОВНЫЕ АГЕНТЫ ====================
 client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def call_gpt(messages, model="gpt-4o-mini", temperature=0.7):
@@ -395,7 +363,6 @@ Respond in {prompt_lang}.
 Text: {text[:3000]}"""
     messages = [{"role": "user", "content": prompt}]
     result = call_gpt(messages)
-    # Очистка
     if result:
         result = re.sub(r'^```json\s*', '', result)
         result = re.sub(r'```$', '', result)
@@ -412,15 +379,13 @@ Style guide: {styleguide[:2000]}
 Examples: {examples[:2000]}
 Glossary: {glossary[:1000]}
 
-Restructure text according to best practices for this assistant type.
+Restructure text according to best practices.
 Rules:
-- No tiny headings
-- Merge short blocks
+- No tiny headings, merge short blocks
 - No "this is not just...", no pleonasms
-- Each paragraph = one thought
-- Smooth transitions
-- If it's a job vacancy: focus on benefits, culture, growth
-- If it's a speech: start with pain/benefit, end with call to action
+- Each paragraph = one thought, smooth transitions
+- If vacancy: focus on benefits, culture, growth
+- If speech: start with pain/benefit, end with call to action
 
 Respond in {prompt_lang}. Return only restructured text.
 
@@ -448,7 +413,7 @@ Text: {text[:3000]}"""
 
 def literary_editing(text, lang):
     prompt_lang = get_prompt_language(lang)
-    prompt = f"""Literary editing: remove repetitions, tautology, forbidden constructions ("this is not just..."), pleonasms, empty phrases, marketing clichés. Group homogeneous items. Return text.
+    prompt = f"""Literary editing: remove repetitions, tautology, forbidden constructions, pleonasms, empty phrases, clichés. Group homogeneous items. Return text.
 Text: {text[:3000]}"""
     messages = [{"role": "user", "content": prompt}]
     return call_gpt(messages, temperature=0.8)
@@ -456,22 +421,21 @@ Text: {text[:3000]}"""
 def final_checklist(text, lang, assistant_name):
     prompt_lang = get_prompt_language(lang)
     extra = ""
-    if "выступление" in assistant_name.lower() or "speech" in assistant_name.lower():
-        extra = "Also ensure: starts with audience pain/benefit, has clear call to action, avoids 'you should' without benefit."
-    if "вакансия" in assistant_name.lower() or "vacancy" in assistant_name.lower():
-        extra = "Ensure: includes benefits, culture, growth opportunities, clear next step (apply)."
-    prompt = f"""Fix any issues: no tiny headings, no forbidden constructions, no pleonasms, no empty phrases, no repetitions, no clichés, factual accuracy. {extra} Return corrected text.
+    if "speech" in assistant_name.lower() or "выступление" in assistant_name.lower():
+        extra = "Ensure: starts with pain/benefit, has clear call to action, avoids 'you should' without benefit."
+    if "vacancy" in assistant_name.lower() or "вакансия" in assistant_name.lower():
+        extra = "Ensure: benefits, culture, growth, clear next step."
+    prompt = f"""Fix issues: no tiny headings, forbidden constructions, pleonasms, empty phrases, repetitions, clichés. {extra} Return corrected text.
 Text: {text[:3000]}"""
     messages = [{"role": "user", "content": prompt}]
     return call_gpt(messages, temperature=0.5)
 
 def generate_verification_report(text, original, lang):
-    # Проверка стоп-фраз
     stop_phrases = {
-        "ru": ["как бы", "наверное", "может быть", "я не знаю", "вы должны", "вы ошибаетесь", "часто", "некоторые", "многие", "заявочку", "договорчик", "сделаем всё", "свяжемся как только сможем", "звоните в любое время", "давайте включим это в проект"],
+        "ru": ["как бы", "наверное", "может быть", "я не знаю", "вы должны", "вы ошибаетесь", "часто", "некоторые", "многие", "заявочку", "договорчик", "сделаем всё", "свяжемся как только сможем", "звоните в любое время"],
         "en": ["kind of", "maybe", "perhaps", "i don't know", "you must", "you are wrong", "some", "many", "probably"]
     }
-    found_stop = [p for p in stop_phrases.get(lang, []) if p in text.lower()]
+    found_stop = [p for p in stop_phrases.get(lang, stop_phrases["en"]) if p in text.lower()]
     prompt_lang = get_prompt_language(lang)
     prompt = f"""Generate verification JSON:
 {{
@@ -512,14 +476,10 @@ def visual_diff(original, rewritten):
     return diff
 
 # ==================== ОСНОВНОЙ ИНТЕРФЕЙС ====================
-# Инициализация session state
 for key in ["styleguide_content", "examples_list", "input_text", "last_result"]:
     if key not in st.session_state:
         st.session_state[key] = "" if key != "examples_list" else []
-if "glossary_list" not in st.session_state:
-    st.session_state.glossary_list = []  # список строк "термин=замена"
 
-# Выбор языка
 lang_options = list(LANGUAGES.keys())
 selected_lang_name = st.sidebar.selectbox("🌐 Language / Язык", lang_options, index=0)
 ui_lang = LANGUAGES[selected_lang_name]
@@ -531,7 +491,6 @@ with st.sidebar:
     st.header(get_text("settings", ui_lang))
     st.markdown("---")
     
-    # Тариф и лимиты
     st.subheader(get_text("subscription", ui_lang))
     tier = st.selectbox("", [get_text("subscription_free", ui_lang), get_text("subscription_pro", ui_lang), get_text("subscription_business", ui_lang)], index=0)
     if tier == get_text("subscription_free", ui_lang):
@@ -540,7 +499,9 @@ with st.sidebar:
         st.session_state.subscription_tier = "pro"
     else:
         st.session_state.subscription_tier = "business"
-    st.caption(get_text("usage_left", ui_lang))
+    
+    remaining = 5 - st.session_state.usage_count if st.session_state.subscription_tier == "free" else "unlimited"
+    st.caption(f"{get_text('usage_left', ui_lang)} {remaining}")
     if st.button(get_text("upgrade_button", ui_lang)):
         st.session_state.subscription_tier = "pro"
         st.rerun()
@@ -573,15 +534,15 @@ with st.sidebar:
     
     st.markdown("---")
     st.subheader(get_text("glossary", ui_lang))
-    glossary_input = st.text_area("Формат: термин = замена (каждая пара с новой строки)", height=100,
-                                  placeholder="продукт = решение\nбыстрый = оперативный")
-    if st.button("Загрузить глоссарий"):
+    glossary_input = st.text_area("Format: term = replacement (one per line)", height=100,
+                                  placeholder="product = solution\nfast = quick")
+    if st.button("Load glossary"):
         st.session_state.glossary = {}
         for line in glossary_input.strip().split("\n"):
             if "=" in line:
                 k, v = line.split("=", 1)
                 st.session_state.glossary[k.strip()] = v.strip()
-        st.success(f"✅ {len(st.session_state.glossary)} терминов")
+        st.success(f"✅ {len(st.session_state.glossary)} terms")
     
     st.markdown("---")
     st.subheader(get_text("google_docs", ui_lang))
@@ -592,26 +553,43 @@ with st.sidebar:
             imported = import_from_google_docs(gdocs_url)
             if imported:
                 st.session_state.input_text = imported
-                st.success(get_text("google_docs_import_success", ui_lang) if ui_lang=="ru" else "Imported")
+                st.success(get_text("google_docs_import_success", ui_lang))
                 st.rerun()
     with col2:
         if st.button(get_text("google_docs_export", ui_lang)):
             if st.session_state.get("last_result"):
-                st.info("📋 Результат скопирован в буфер (выделите и скопируйте вручную)")
+                st.info("📋 Result copied (select and copy manually)")
     
     st.markdown("---")
     audience_options = get_audience_options(ui_lang)
     audience = st.selectbox(get_text("audience", ui_lang), audience_options, index=0)
     
     st.markdown("---")
-    emotionality = st.select_slider(get_text("emotionality", ui_lang), options=get_text("emotionality_options", ui_lang), value="средняя")
-    complexity = st.select_slider(get_text("complexity", ui_lang), options=get_text("complexity_options", ui_lang), value="средняя")
-    speed = st.select_slider(get_text("speed", ui_lang), options=get_text("speed_options", ui_lang), value="ритмичная")
+    # Используем OPTIONS для слайдеров
+    emotionality_opts = get_options(ui_lang, "emotionality")
+    emotionality = st.select_slider(
+        get_text("emotionality", ui_lang),
+        options=emotionality_opts,
+        value=emotionality_opts[1] if len(emotionality_opts) > 1 else emotionality_opts[0]
+    )
+    
+    complexity_opts = get_options(ui_lang, "complexity")
+    complexity = st.select_slider(
+        get_text("complexity", ui_lang),
+        options=complexity_opts,
+        value=complexity_opts[1] if len(complexity_opts) > 1 else complexity_opts[0]
+    )
+    
+    speed_opts = get_options(ui_lang, "speed")
+    speed = st.select_slider(
+        get_text("speed", ui_lang),
+        options=speed_opts,
+        value=speed_opts[0]
+    )
     
     st.markdown("---")
     st.caption(f"{BRAND_CONFIG['app_name']} v2.0 – {BRAND_CONFIG['company_name']}")
 
-# Поле ввода
 input_text = st.text_area(get_text("text_input_label", ui_lang), height=250, max_chars=8000, value=st.session_state.input_text)
 
 col1, col2, col3 = st.columns([1,2,1])
@@ -648,17 +626,13 @@ if run:
         with st.spinner(get_text("spinner6", ui_lang)):
             final_text = final_checklist(edited, target_lang, selected_assistant["name"])
         
-        # Применяем глоссарий
         if st.session_state.glossary:
             final_text = apply_glossary(final_text)
         
-        # Фактчекинг и юр. проверка
         with st.spinner(get_text("spinner7", ui_lang)):
             fact_legal = factcheck_and_legal(final_text, target_lang)
-        
         with st.spinner(get_text("spinner8", ui_lang)):
             verification = generate_verification_report(final_text, input_text, target_lang)
-        
         with st.spinner(get_text("spinner9", ui_lang)):
             report = final_check(input_text, final_text, target_lang)
         
@@ -689,7 +663,7 @@ if run:
         with tab5:
             st.markdown(f"### {get_text('verification_header', ui_lang)}")
             if verification.get("stop_phrases_found"):
-                st.markdown("**🚫 Стоп-фразы:** " + ", ".join(verification["stop_phrases_found"]))
+                st.markdown("**🚫 Stop phrases:** " + ", ".join(verification["stop_phrases_found"]))
             if fact_legal.get("facts_to_verify"):
                 st.markdown(get_text("factcheck_found", ui_lang))
                 for f in fact_legal["facts_to_verify"]:
@@ -708,19 +682,18 @@ if run:
                     st.markdown(f"- ⚠️ {a}")
             verdict = verification.get("overall_verdict", "needs revision")
             if verdict == "ready with caution":
-                st.info("🟡 " + ("С осторожностью" if ui_lang=="ru" else "Use with caution"))
+                st.info("🟡 Use with caution")
             else:
-                st.warning("🔴 " + ("Требуется доработка" if ui_lang=="ru" else "Needs revision"))
+                st.warning("🔴 Needs revision")
         with tab6:
             if st.session_state.history:
                 for i, item in enumerate(st.session_state.history[:5]):
                     with st.expander(f"{item['timestamp'][:16]} – {item['original'][:80]}..."):
-                        st.text("Было: " + item['original'])
-                        st.text("Стало: " + item['result'])
+                        st.text("Original: " + item['original'])
+                        st.text("Result: " + item['result'])
             else:
-                st.info("История пуста")
+                st.info("No history yet")
 
-# Счётчик сессий
 if "visit_count" not in st.session_state:
     st.session_state.visit_count = 0
 st.session_state.visit_count += 1
