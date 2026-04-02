@@ -285,16 +285,106 @@ def get_assistants(lang):
 
 # ==================== АУДИТОРНЫЕ ГРУППЫ ====================
 AUDIENCE_OPTIONS = {
-    "ru": ["👔 ЛПР", "⚙️ Технари", "📢 Маркетологи", "💰 Инвесторы", "👥 Массовая", "🎯 Сотрудники", "🏢 B2B", "🛍️ B2C"],
-    "en": ["👔 Executive", "⚙️ Technical", "📢 Marketing", "💰 Investor", "👥 General", "🎯 Employees", "🏢 B2B", "🛍️ B2C"],
-    "de": ["👔 Führung", "⚙️ Technik", "📢 Marketing", "💰 Investor", "👥 Öffentlichkeit", "🎯 Mitarbeiter", "🏢 B2B", "🛍️ B2C"],
-    "fr": ["👔 Dirigeant", "⚙️ Technique", "📢 Marketing", "💰 Investisseur", "👥 Public", "🎯 Employés", "🏢 B2B", "🛍️ B2C"],
-    "es": ["👔 Ejecutivo", "⚙️ Técnico", "📢 Marketing", "💰 Inversor", "👥 Público", "🎯 Empleados", "🏢 B2B", "🛍️ B2C"],
-    "sr": ["👔 Rukovodilac", "⚙️ Tehničari", "📢 Marketing", "💰 Investitori", "👥 Publika", "🎯 Zaposleni", "🏢 B2B", "🛍️ B2C"],
-    "sq": ["👔 Ekzekutiv", "⚙️ Teknik", "📢 Marketing", "💰 Investitor", "👥 Publiku", "🎯 Punonjës", "🏢 B2B", "🛍️ B2C"],
-    "pl": ["👔 Kierownictwo", "⚙️ Technicy", "📢 Marketing", "💰 Inwestorzy", "👥 Publiczność", "🎯 Pracownicy", "🏢 B2B", "🛍️ B2C"],
-    "hu": ["👔 Vezető", "⚙️ Műszaki", "📢 Marketing", "💰 Befektető", "👥 Közönség", "🎯 Alkalmazottak", "🏢 B2B", "🛍️ B2C"],
-    "cs": ["👔 Vedení", "⚙️ Technici", "📢 Marketing", "💰 Investoři", "👥 Veřejnost", "🎯 Zaměstnanci", "🏢 B2B", "🛍️ B2C"]
+    "ru": [
+        "👔 ЛПР (CEO, директор) — стратегия, внедрение, результаты",
+        "⚙️ Технари (инженеры, R&D) — точность, детали, факты",
+        "📢 Маркетологи и PR — значимость, новизна, репутация",
+        "💰 Инвесторы (фонды, бизнес-ангелы) — эффективность, масштабирование, риски",
+        "👥 Массовая аудитория — простота, образы, примеры",
+        "🎯 Потенциальные сотрудники (найм) — вовлеченность, развитие, ценности",
+        "🏢 Покупатели B2B — выгода, надежность, окупаемость",
+        "🛍️ Покупатели B2C — польза, простота, впечатления"
+    ],
+    "en": [
+        "👔 Executive (CEO, Director) — strategy, implementation, results",
+        "⚙️ Technical (Engineers, R&D) — precision, details, facts",
+        "📢 Marketing & PR — significance, novelty, reputation",
+        "💰 Investor (VC, Angel) — efficiency, scalability, risks",
+        "👥 General Public — simplicity, images, examples",
+        "🎯 Potential Employees (Recruitment) — engagement, growth, values",
+        "🏢 B2B Buyers — benefits, reliability, ROI",
+        "🛍️ B2C Buyers — personal benefit, simplicity, experience"
+    ],
+    "de": [
+        "👔 Führungskraft (CEO, Direktor) — Strategie, Umsetzung, Ergebnisse",
+        "⚙️ Techniker (Ingenieure, F&E) — Präzision, Details, Fakten",
+        "📢 Marketing & PR — Bedeutung, Neuheit, Reputation",
+        "💰 Investor (VC, Angel) — Effizienz, Skalierbarkeit, Risiken",
+        "👥 Allgemeine Öffentlichkeit — Einfachheit, Bilder, Beispiele",
+        "🎯 Potenzielle Mitarbeiter (Recruitment) — Engagement, Entwicklung, Werte",
+        "🏢 B2B-Käufer — Nutzen, Zuverlässigkeit, ROI",
+        "🛍️ B2C-Käufer — persönlicher Nutzen, Einfachheit, Erlebnis"
+    ],
+    "fr": [
+        "👔 Dirigeant (CEO, Directeur) — stratégie, mise en œuvre, résultats",
+        "⚙️ Technique (Ingénieurs, R&D) — précision, détails, faits",
+        "📢 Marketing & RP — signification, nouveauté, réputation",
+        "💰 Investisseur (VC, Angel) — efficacité, évolutivité, risques",
+        "👥 Grand public — simplicité, images, exemples",
+        "🎯 Employés potentiels (Recrutement) — engagement, développement, valeurs",
+        "🏢 Acheteurs B2B — avantages, fiabilité, ROI",
+        "🛍️ Acheteurs B2C — bénéfice personnel, simplicité, expérience"
+    ],
+    "es": [
+        "👔 Ejecutivo (CEO, Director) — estrategia, implementación, resultados",
+        "⚙️ Técnico (Ingenieros, I+D) — precisión, detalles, hechos",
+        "📢 Marketing & RRPP — significado, novedad, reputación",
+        "💰 Inversor (VC, Angel) — eficiencia, escalabilidad, riesgos",
+        "👥 Público general — simplicidad, imágenes, ejemplos",
+        "🎯 Empleados potenciales (Contratación) — compromiso, desarrollo, valores",
+        "🏢 Compradores B2B — beneficios, confiabilidad, ROI",
+        "🛍️ Compradores B2C — beneficio personal, simplicidad, experiencia"
+    ],
+    "sr": [
+        "👔 Rukovodilac (CEO, direktor) — strategija, implementacija, rezultati",
+        "⚙️ Tehničari (inženjeri, R&D) — preciznost, detalji, činjenice",
+        "📢 Marketing i PR — značaj, novost, reputacija",
+        "💰 Investitori (fondovi, biznis anđeli) — efikasnost, skalabilnost, rizici",
+        "👥 Šira publika — jednostavnost, slike, primeri",
+        "🎯 Potencijalni zaposleni (zapošljavanje) — angažovanost, razvoj, vrednosti",
+        "🏢 B2B kupci — korist, pouzdanost, isplativost",
+        "🛍️ B2C kupci — lična korist, jednostavnost, iskustvo"
+    ],
+    "sq": [
+        "👔 Ekzekutiv (CEO, drejtor) — strategji, zbatim, rezultate",
+        "⚙️ Teknik (inxhinierë, R&D) — saktësi, detaje, fakte",
+        "📢 Marketing dhe PR — rëndësi, risi, reputacion",
+        "💰 Investitor (fond, biznes engjëll) — efikasitet, shkallëzim, rreziqe",
+        "👥 Publiku i gjerë — thjeshtësi, imazhe, shembuj",
+        "🎯 Punonjës potencial (rekrutim) — angazhim, zhvillim, vlera",
+        "🏢 Blerësit B2B — përfitime, besueshmëri, kthim investimi",
+        "🛍️ Blerësit B2C — përfitim personal, thjeshtësi, përvojë"
+    ],
+    "pl": [
+        "👔 Kadra zarządzająca (CEO, dyrektor) — strategia, wdrożenie, wyniki",
+        "⚙️ Technicy (inżynierowie, R&D) — precyzja, szczegóły, fakty",
+        "📢 Marketing i PR — znaczenie, nowość, reputacja",
+        "💰 Inwestorzy (fundusze, aniołowie biznesu) — efektywność, skalowalność, ryzyko",
+        "👥 Szeroka publiczność — prostota, obrazy, przykłady",
+        "🎯 Potencjalni pracownicy (rekrutacja) — zaangażowanie, rozwój, wartości",
+        "🏢 Klienci B2B — korzyści, niezawodność, ROI",
+        "🛍️ Klienci B2C — korzyść osobista, prostota, doświadczenie"
+    ],
+    "hu": [
+        "👔 Vezető (CEO, igazgató) — stratégia, bevezetés, eredmények",
+        "⚙️ Műszaki szakemberek (mérnökök, R&D) — precizitás, részletek, tények",
+        "📢 Marketing és PR — jelentőség, újdonság, hírnév",
+        "💰 Befektetők (alapok, üzleti angyalok) — hatékonyság, skálázhatóság, kockázatok",
+        "👥 Széles közönség — egyszerűség, képek, példák",
+        "🎯 Potenciális alkalmazottak (toborzás) — elkötelezettség, fejlődés, értékek",
+        "🏢 B2B vásárlók — előnyök, megbízhatóság, megtérülés",
+        "🛍️ B2C vásárlók — személyes haszon, egyszerűség, élmény"
+    ],
+    "cs": [
+        "👔 Vedení (CEO, ředitel) — strategie, implementace, výsledky",
+        "⚙️ Technici (inženýři, R&D) — přesnost, detaily, fakta",
+        "📢 Marketing a PR — význam, novost, reputace",
+        "💰 Investoři (fondy, andělští investoři) — efektivita, škálovatelnost, rizika",
+        "👥 Široká veřejnost — jednoduchost, obrazy, příklady",
+        "🎯 Potenciální zaměstnanci (nábor) — angažovanost, rozvoj, hodnoty",
+        "🏢 B2B kupující — výhody, spolehlivost, návratnost",
+        "🛍️ B2C kupující — osobní prospěch, jednoduchost, zážitek"
+    ]
 }
 
 def get_audience_options(lang):
